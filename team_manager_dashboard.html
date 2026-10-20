@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#171717">
+<title>Team Manager Dashboard</title>
+<style>
+:root{--bg:#f5f5f4;--card:#fff;--ink:#171717;--muted:#6b7280;--line:#e5e7eb;--dark:#171717;--soft:#f3f4f6;--green:#166534;--greenbg:#dcfce7;--red:#991b1b;--redbg:#fee2e2;--amber:#92400e;--amberbg:#fef3c7}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:12px 14px;background:var(--dark);color:white;font-weight:650;min-height:44px}button:disabled{opacity:.45;cursor:not-allowed}.secondary{background:var(--soft);color:var(--ink);border:1px solid var(--line)}.danger{background:var(--redbg);color:var(--red)}.success{background:var(--greenbg);color:var(--green)}.tiny{padding:7px 10px;min-height:36px;font-size:13px}.app{max-width:900px;margin:auto;padding:16px 14px 40px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 2px 18px}.brand{font-weight:850;font-size:21px;letter-spacing:-.5px}.subtitle{font-size:12px;color:var(--muted)}.pill{border:1px solid var(--line);background:white;padding:6px 10px;border-radius:99px;font-size:12px;color:var(--muted)}.layout{display:grid;grid-template-columns:1fr;gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 2px 8px #00000005}.card h2{font-size:16px;margin:0 0 12px;letter-spacing:-.2px}.card h3{font-size:14px;margin:0 0 8px}.muted{color:var(--muted)}.small{font-size:12px;color:var(--muted)}.current-head{display:flex;justify-content:space-between;align-items:start;gap:10px}.name{font-size:24px;font-weight:800;letter-spacing:-.6px;overflow-wrap:anywhere}.email{color:#4b5563;overflow-wrap:anywhere;margin:3px 0 12px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.actions .wide{grid-column:1/-1}.row{display:flex;gap:8px;align-items:center}.row>*{min-width:0}.field{display:flex;flex-direction:column;gap:5px;margin:9px 0}.field label{font-size:12px;font-weight:700;color:#4b5563}.field input,.field select,.field textarea,input[type=file]{width:100%;border:1px solid #d1d5db;background:white;border-radius:10px;padding:11px;color:var(--ink)}textarea{resize:vertical;min-height:72px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}.stat{background:var(--soft);border-radius:12px;padding:10px}.stat strong{display:block;font-size:21px}.stat span{font-size:11px;color:var(--muted)}.divider{border:0;border-top:1px solid var(--line);margin:14px 0}.status-options{display:grid;grid-template-columns:1fr 1fr;gap:8px}.status-option{border:1px solid var(--line);border-radius:10px;padding:10px;background:white;display:flex;align-items:center;gap:8px;font-size:13px}.status-option input{accent-color:#171717}.message-list{display:grid;gap:8px}.message-item{border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;align-items:center;gap:8px}.message-item .msgname{font-weight:700;flex:1;overflow-wrap:anywhere}.message-item button{flex-shrink:0}.empty{padding:18px;border:1px dashed #d1d5db;border-radius:12px;text-align:center;color:var(--muted);font-size:13px}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.toolbar button{flex:1}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:12px}th,td{text-align:left;padding:9px;border-bottom:1px solid var(--line);vertical-align:top;overflow-wrap:anywhere}th{color:var(--muted);font-weight:700}.contact-list{display:grid;gap:7px;max-height:300px;overflow:auto}.contact-row{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:11px;padding:10px}.contact-row.active{border-color:#171717;background:#f9fafb}.contact-row .contact-info{flex:1;min-width:0}.contact-row strong,.contact-row small{display:block;overflow-wrap:anywhere}.contact-row small{color:var(--muted)}.notice{font-size:12px;padding:10px 12px;border-radius:10px;background:var(--amberbg);color:var(--amber);margin-top:10px}.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#171717;color:white;padding:11px 15px;border-radius:12px;box-shadow:0 5px 25px #0003;z-index:10;max-width:90%;font-size:13px;display:none}.section-title{display:flex;justify-content:space-between;align-items:center;gap:8px}.hidden{display:none!important}
+@media(min-width:760px){.layout{grid-template-columns:1.05fr .95fr}.span2{grid-column:1/-1}.app{padding:24px 20px 50px}.card{padding:20px}.name{font-size:28px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div><div class="brand">Team Manager</div><div class="subtitle">Manual call control · voice messages · call log</div></div>
+    <span class="pill" id="saveIndicator">Saved on this device</span>
+  </header>
+
+  <div class="statgrid">
+    <div class="stat"><strong id="totalCount">0</strong><span>Team members</span></div>
+    <div class="stat"><strong id="doneCount">0</strong><span>Calls logged</span></div>
+    <div class="stat"><strong id="yesCount">0</strong><span>Yes responses</span></div>
+  </div>
+
+  <main class="layout">
+    <section class="card">
+      <div class="section-title"><h2>Current contact</h2><span class="pill" id="position">0 of 0</span></div>
+      <div id="currentDetails">
+        <div class="empty">Import your contact spreadsheet or add a team member to get started.</div>
+      </div>
+      <hr class="divider">
+      <div class="actions">
+        <button id="openMeetBtn" class="wide">Open Google Meet ↗</button>
+        <button id="copyEmailBtn" class="secondary">Copy email</button>
+        <button id="nextBtn" class="secondary">Next contact →</button>
+      </div>
+      <p class="small">Meet opens separately. You place/manage the meeting yourself; this dashboard does not dial people or hang up for you.</p>
+    </section>
+
+    <section class="card">
+      <h2>Play a voice message</h2>
+      <p class="small">Tap a saved recording when you choose. Audio plays from your phone; test with a consenting participant to see whether Meet transmits it.</p>
+      <div class="field"><label for="audioImport">Add audio recording (MP3, M4A, WAV, etc.)</label><input id="audioImport" type="file" accept="audio/*"></div>
+      <div class="row">
+        <div class="field" style="flex:1"><label for="audioName">Message label</label><input id="audioName" placeholder="e.g. Greeting, Weekly plan"></div>
+        <button id="addAudioBtn" style="align-self:end">Save message</button>
+      </div>
+      <div id="audioList" class="message-list"><div class="empty">No recordings saved yet.</div></div>
+      <div class="toolbar" style="margin-top:10px"><button id="stopAudioBtn" class="secondary">Stop playback</button></div>
+      <div id="audioFeedback" class="small" style="margin-top:8px" aria-live="polite">No audio playing.</div>
+    </section>
+
+    <section class="card">
+      <h2>Record call result</h2>
+      <div class="field"><label>Response / outcome</label>
+        <div class="status-options" id="statusOptions">
+          <label class="status-option"><input type="radio" name="status" value="Yes" checked> Yes</label>
+          <label class="status-option"><input type="radio" name="status" value="No"> No</label>
+          <label class="status-option"><input type="radio" name="status" value="No answer"> No answer</label>
+          <label class="status-option"><input type="radio" name="status" value="Call again"> Call again</label>
+          <label class="status-option"><input type="radio" name="status" value="Other"> Other</label>
+        </div>
+      </div>
+      <div class="field"><label for="callNotes">Notes (optional)</label><textarea id="callNotes" placeholder="What did they say? What needs follow-up?"></textarea></div>
+      <div class="toolbar">
+        <button id="saveCallBtn">Save call result</button>
+        <button id="saveNextBtn" class="secondary">Save & next →</button>
+      </div>
+      <p class="small">Each saved result includes the contact, email, status, notes, and timestamp.</p>
+    </section>
+
+    <section class="card">
+      <h2>Import / add contacts</h2>
+      <p class="small">Import a CSV spreadsheet with columns such as <b>Name, Email, Role</b>. You can also add people one by one.</p>
+      <div class="field"><label for="contactsFile">Import contacts CSV</label><input id="contactsFile" type="file" accept=".csv,text/csv"></div>
+      <div class="toolbar"><button id="importBtn">Import CSV</button><button id="sampleBtn" class="secondary">Get CSV template</button></div>
+      <hr class="divider">
+      <div class="field"><label for="newName">Name</label><input id="newName" placeholder="Team member name"></div>
+      <div class="field"><label for="newEmail">Email</label><input id="newEmail" type="email" placeholder="name@example.com"></div>
+      <div class="field"><label for="newRole">Role (optional)</label><input id="newRole" placeholder="e.g. Designer"></div>
+      <button id="addContactBtn" class="wide">Add contact</button>
+      <div class="notice">Privacy: use only contact details you are authorized to manage. This page stores data in this browser on this device; it does not sync to the cloud automatically.</div>
+    </section>
+
+    <section class="card span2">
+      <div class="section-title"><h2>Team list</h2><div class="toolbar"><button id="exportContactsBtn" class="secondary tiny">Export contacts</button><button id="backupBtn" class="secondary tiny">Full backup</button></div></div>
+      <div id="contactList" class="contact-list"><div class="empty">Your team list will appear here.</div></div>
+    </section>
+
+    <section class="card span2">
+      <div class="section-title"><h2>Call history</h2><button id="exportCallsBtn" class="tiny">Export for Excel (.csv)</button></div>
+      <div id="historyTable" class="tablewrap"><div class="empty">No call results saved yet.</div></div>
+      <div class="toolbar" style="margin-top:10px"><button id="clearHistoryBtn" class="secondary tiny">Clear call history</button></div>
+    </section>
+  </main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const DB_NAME='team-manager-db-v1', STORE='audio';
+let contacts=[], records=[], currentIndex=0, playingAudio=null, playingUrl=null, toastTimer=null, db=null;
+const STORAGE_KEY='team-manager-state-v1';
+
+function toast(message){
+ const t=$('toast');t.textContent=message;t.style.display='block';
+ clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.style.display='none',2600);
+}
+function escapeHTML(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function persist(){
+ try{localStorage.setItem(STORAGE_KEY,JSON.stringify({contacts,records,currentIndex}));$('saveIndicator').textContent='Saved on this device';}
+ catch(e){toast('Could not save browser data. Export a backup.');}
+}
+function restore(){
+ try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}');contacts=Array.isArray(x.contacts)?x.contacts:[];records=Array.isArray(x.records)?x.records:[];currentIndex=Number.isInteger(x.currentIndex)?x.currentIndex:0;}
+ catch(e){contacts=[];records=[];currentIndex=0;}
+}
+function active(){return contacts[currentIndex]||null;}
+function normalizeContact(c){
+ return {id:c.id||('c_'+Date.now()+'_'+Math.random().toString(36).slice(2,7)),name:String(c.name||'').trim(),email:String(c.email||'').trim(),role:String(c.role||'').trim()};
+}
+function render(){
+ if(currentIndex>=contacts.length)currentIndex=Math.max(0,contacts.length-1);
+ $('totalCount').textContent=contacts.length;
+ $('doneCount').textContent=records.length;
+ $('yesCount').textContent=records.filter(r=>r.status==='Yes').length;
+ $('position').textContent=contacts.length?`${currentIndex+1} of ${contacts.length}`:'0 of 0';
+ const p=active();
+ $('currentDetails').innerHTML=p?`<div class="current-head"><div><div class="name">${escapeHTML(p.name)}</div><div class="email">${escapeHTML(p.email)}</div><div class="small">${escapeHTML(p.role||'No role specified')}</div></div><span class="pill">Selected</span></div>`:'<div class="empty">Import your contact spreadsheet or add a team member to get started.</div>';
+ ['copyEmailBtn','nextBtn','openMeetBtn','saveCallBtn','saveNextBtn'].forEach(id=>$(id).disabled=!p);
+ $('contactList').innerHTML=contacts.length?contacts.map((c,i)=>`<div class="contact-row ${i===currentIndex?'active':''}"><button class="tiny secondary" data-select="${i}" aria-label="Select ${escapeHTML(c.name)}">${i===currentIndex?'Current':'Select'}</button><div class="contact-info"><strong>${escapeHTML(c.name)}</strong><small>${escapeHTML(c.email)}${c.role?' · '+escapeHTML(c.role):''}</small></div><button class="tiny secondary" data-copy="${i}">Copy</button><button class="tiny danger" data-delete="${i}" aria-label="Delete ${escapeHTML(c.name)}">×</button></div>`).join(''):'<div class="empty">Your team list will appear here.</div>';
+ $('historyTable').innerHTML=records.length?`<table><thead><tr><th>Date</th><th>Name / email</th><th>Status</th><th>Notes</th></tr></thead><tbody>${records.slice().reverse().map(r=>`<tr><td>${escapeHTML(new Date(r.date).toLocaleString())}</td><td><b>${escapeHTML(r.name)}</b><br>${escapeHTML(r.email)}</td><td>${escapeHTML(r.status)}</td><td>${escapeHTML(r.notes||'')}</td></tr>`).join('')}</tbody></table>`:'<div class="empty">No call results saved yet.</div>';
+ persist();
+}
+function addContact(c){
+ const item=normalizeContact(c);
+ if(!item.name||!item.email){toast('Name and email are required.');return false;}
+ const existing=contacts.findIndex(x=>x.email.toLowerCase()===item.email.toLowerCase());
+ if(existing>=0){contacts[existing]={...contacts[existing],...item,id:contacts[existing].id};currentIndex=existing;toast('Updated existing email address.');}
+ else{contacts.push(item);currentIndex=contacts.length-1;}
+ render();return true;
+}
+function csvParse(text){
+ const rows=[];let row=[],field='',quoted=false;
+ text=String(text).replace(/^\uFEFF/,'');
+ for(let i=0;i<text.length;i++){
+  const ch=text[i],next=text[i+1];
+  if(quoted){if(ch==='"'&&next==='"'){field+='"';i++;}else if(ch==='"')quoted=false;else field+=ch;}
+  else if(ch==='"')quoted=true;
+  else if(ch===','){row.push(field);field='';}
+  else if(ch==='\n'){row.push(field);rows.push(row);row=[];field='';}
+  else if(ch!=='\r')field+=ch;
+ }
+ row.push(field);if(row.some(v=>v.trim()))rows.push(row);
+ return rows;
+}
+function download(filename,content,type){
+ const blob=new Blob([content],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+function csvCell(v){return '"'+String(v??'').replace(/"/g,'""')+'"';}
+function exportCSV(){
+ const rows=[['Date','Name','Email','Status','Notes'],...records.map(r=>[r.date,r.name,r.email,r.status,r.notes||''])];
+ download('team-call-history.csv','\uFEFF'+rows.map(r=>r.map(csvCell).join(',')).join('\r\n'),'text/csv;charset=utf-8');
+}
+function exportContacts(){
+ const rows=[['Name','Email','Role'],...contacts.map(c=>[c.name,c.email,c.role])];
+ download('team-contacts.csv','\uFEFF'+rows.map(r=>r.map(csvCell).join(',')).join('\r\n'),'text/csv;charset=utf-8');
+}
+function getDB(){
+ return new Promise((resolve,reject)=>{
+  if(!('indexedDB' in window)){reject(new Error('This browser does not support local audio storage.'));return;}
+  const req=indexedDB.open(DB_NAME,1);
+  req.onupgradeneeded=()=>{const d=req.result;if(!d.objectStoreNames.contains(STORE))d.createObjectStore(STORE,{keyPath:'id'});};
+  req.onsuccess=()=>{db=req.result;resolve(db);};req.onerror=()=>reject(req.error);
+ });
+}
+async function dbPut(item){const d=db||await getDB();return new Promise((res,rej)=>{const tx=d.transaction(STORE,'readwrite');tx.objectStore(STORE).put(item);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);});}
+async function dbAll(){const d=db||await getDB();return new Promise((res,rej)=>{const tx=d.transaction(STORE,'readonly'),req=tx.objectStore(STORE).getAll();req.onsuccess=()=>res(req.result||[]);req.onerror=()=>rej(req.error);});}
+async function dbDelete(id){const d=db||await getDB();return new Promise((res,rej)=>{const tx=d.transaction(STORE,'readwrite');tx.objectStore(STORE).delete(id);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);});}
+async function renderAudio(){
+ try{
+  const files=await dbAll();
+  $('audioList').innerHTML=files.length?files.map(f=>`<div class="message-item"><div class="msgname">${escapeHTML(f.name)}<div class="small">${escapeHTML(f.fileName||'Audio recording')}</div></div><button class="tiny" data-play="${escapeHTML(f.id)}">▶ Play</button><button class="tiny danger" data-audiodel="${escapeHTML(f.id)}">Delete</button></div>`).join(''):'<div class="empty">No recordings saved yet. Add a recording above.</div>';
+ }catch(e){$('audioList').innerHTML='<div class="empty">Audio storage is unavailable in this browser.</div>';}
+}
+async function playSavedAudio(id){
+ try{
+  const files=await dbAll(),f=files.find(x=>x.id===id);if(!f)return;
+  stopAudio();
+  playingUrl=URL.createObjectURL(f.blob);playingAudio=new Audio(playingUrl);
+  $('audioFeedback').textContent='Playing: '+f.name+' — audio comes from your phone output.';
+  playingAudio.onended=()=>{stopAudio();$('audioFeedback').textContent='Message finished.';};
+  playingAudio.onerror=()=>{$('audioFeedback').textContent='Could not play this file format.';};
+  await playingAudio.play();
+ }catch(e){toast('Playback failed. Tap Play again and check phone volume.');}
+}
+function stopAudio(){
+ if(playingAudio){playingAudio.pause();playingAudio.currentTime=0;playingAudio=null;}
+ if(playingUrl){URL.revokeObjectURL(playingUrl);playingUrl=null;}
+}
+$('addContactBtn').addEventListener('click',()=>{
+ const ok=addContact({name:$('newName').value,email:$('newEmail').value,role:$('newRole').value});
+ if(ok){$('newName').value='';$('newEmail').value='';$('newRole').value='';toast('Contact saved.');}
+});
+$('importBtn').addEventListener('click',async()=>{
+ const f=$('contactsFile').files[0];if(!f){toast('Choose a CSV file first.');return;}
+ try{
+  const rows=csvParse(await f.text());if(rows.length<2){toast('CSV needs a header row and at least one contact.');return;}
+  const headers=rows[0].map(h=>h.trim().toLowerCase().replace(/[\s_-]/g,''));
+  const find=names=>headers.findIndex(h=>names.includes(h));
+  const ni=find(['name','fullname','contactname']),ei=find(['email','emailaddress','gmail']),ri=find(['role','jobtitle','position']);
+  if(ni<0||ei<0){toast('CSV must have Name and Email columns.');return;}
+  let added=0;
+  rows.slice(1).forEach(r=>{const n=r[ni]||'',e=r[ei]||'';if(n.trim()&&e.trim()){const before=contacts.length;if(addContactQuiet({name:n,email:e,role:ri>=0?r[ri]||'':''}))added++;}});
+  currentIndex=Math.max(0,contacts.length-1);render();toast(`Imported/updated ${added} contacts.`);
+ }catch(e){toast('Could not read that CSV file.');}
+});
+function addContactQuiet(c){
+ const item=normalizeContact(c);if(!item.name||!item.email)return false;
+ const ix=contacts.findIndex(x=>x.email.toLowerCase()===item.email.toLowerCase());
+ if(ix>=0)contacts[ix]={...contacts[ix],name:item.name,role:item.role};else contacts.push(item);
+ return true;
+}
+$('sampleBtn').addEventListener('click',()=>download('contacts-template.csv','Name,Email,Role\r\nSarah,sarah@example.com,Video editor\r\n','text/csv;charset=utf-8'));
+$('copyEmailBtn').addEventListener('click',async()=>{const p=active();if(!p)return;try{await navigator.clipboard.writeText(p.email);toast('Email copied.');}catch(e){prompt('Copy this email:',p.email);}});
+$('openMeetBtn').addEventListener('click',()=>window.open('https://meet.google.com/','_blank','noopener'));
+$('nextBtn').addEventListener('click',()=>{if(!contacts.length)return;currentIndex=(currentIndex+1)%contacts.length;$('callNotes').value='';render();});
+function saveRecord(){
+ const p=active();if(!p)return false;
+ const status=document.querySelector('input[name="status"]:checked')?.value||'Other';
+ records.push({id:'r_'+Date.now()+'_'+Math.random().toString(36).slice(2,6),date:new Date().toISOString(),name:p.name,email:p.email,status,notes:$('callNotes').value.trim()});
+ $('callNotes').value='';persist();render();toast('Call result saved.');return true;
+}
+$('saveCallBtn').addEventListener('click',saveRecord);
+$('saveNextBtn').addEventListener('click',()=>{if(saveRecord()&&contacts.length){currentIndex=(currentIndex+1)%contacts.length;render();}});
+$('exportCallsBtn').addEventListener('click',exportCSV);
+$('exportContactsBtn').addEventListener('click',exportContacts);
+$('backupBtn').addEventListener('click',()=>download('team-manager-backup.json',JSON.stringify({contacts,records,exportedAt:new Date().toISOString()},null,2),'application/json'));
+$('clearHistoryBtn').addEventListener('click',()=>{if(confirm('Delete all call history? Export it first if you need a copy.')){records=[];render();toast('Call history cleared.');}});
+$('stopAudioBtn').addEventListener('click',()=>{stopAudio();$('audioFeedback').textContent='Playback stopped.';});
+$('addAudioBtn').addEventListener('click',async()=>{
+ const f=$('audioImport').files[0],name=$('audioName').value.trim()||f?.name||'Voice message';
+ if(!f){toast('Choose an audio file first.');return;}
+ try{await dbPut({id:'a_'+Date.now()+'_'+Math.random().toString(36).slice(2,6),name,fileName:f.name,mimeType:f.type,blob:f,addedAt:new Date().toISOString()});$('audioImport').value='';$('audioName').value='';await renderAudio();toast('Voice message saved on this device.');}
+ catch(e){toast('Could not save audio. Try a smaller recording or another browser.');}
+});
+$('audioList').addEventListener('click',async e=>{
+ const play=e.target.closest('[data-play]'),del=e.target.closest('[data-audiodel]');
+ if(play)await playSavedAudio(play.dataset.play);
+ if(del&&confirm('Delete this saved recording?')){stopAudio();await dbDelete(del.dataset.audiodel);await renderAudio();toast('Recording deleted.');}
+});
+$('contactList').addEventListener('click',async e=>{
+ const s=e.target.closest('[data-select]'),c=e.target.closest('[data-copy]'),d=e.target.closest('[data-delete]');
+ if(s){currentIndex=Number(s.dataset.select);render();}
+ if(c){const p=contacts[Number(c.dataset.copy)];try{await navigator.clipboard.writeText(p.email);toast('Email copied.');}catch(err){prompt('Copy email:',p.email);}}
+ if(d&&confirm('Delete this contact? Existing call records will remain.')){const i=Number(d.dataset.delete);contacts.splice(i,1);if(currentIndex>=contacts.length)currentIndex=Math.max(0,contacts.length-1);render();}
+});
+restore();render();renderAudio();
+})();
+</script>
+</body>
+</html>
